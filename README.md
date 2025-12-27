@@ -10,6 +10,9 @@ View executed trades
 
 Example:
 BUY LIMIT RELIANCE 1560 5
+
 SELL LIMIT RELIANCE 1560 2
+
 BOOK
+
 TRADES
