@@ -5,11 +5,16 @@ using namespace std;
 void OrderBook::addOrder(Order order)
 {
     if (order.side == BUY)
+    {
         matchBuy(order);
+    }
     else
+    {
         matchSell(order);
+    }
 }
 
+// Remove an order id from both sides (if present).
 void OrderBook::cancelOrder(int id)
 {
     removeFromBook(buyBook, id);
@@ -41,10 +46,12 @@ void OrderBook::matchBuy(Order &order)
 {
     while (order.qty > 0 && !sellBook.empty())
     {
-        auto it = sellBook.begin();
+        auto it = sellBook.begin(); // best (lowest) ask
 
         if (order.type == LIMIT && order.price < it->first)
-            break;
+        {
+            break; // best ask is above buy limit
+        }
 
         executeTrade(order, it->second.front(), it->first);
 
@@ -62,10 +69,12 @@ void OrderBook::matchSell(Order &order)
 {
     while (order.qty > 0 && !buyBook.empty())
     {
-        auto it = buyBook.begin();
+        auto it = buyBook.begin(); // best (highest) bid
 
         if (order.type == LIMIT && order.price > it->first)
-            break;
+        {
+            break; // best bid is below sell limit
+        }
 
         executeTrade(it->second.front(), order, it->first);
 
@@ -86,8 +95,15 @@ void OrderBook::executeTrade(Order &buy, Order &sell, double price)
     sell.qty -= tradeQty;
 
     trades.push_back({buy.id, sell.id, tradeQty, price});
+
+    // friendly single-line notification (keeps output easy to read)
+    std::cout << "Executed trade: BUY#" << buy.id
+              << " SELL#" << sell.id
+              << " Qty " << tradeQty
+              << " @ " << price << "\n";
 }
 
+// Remove an order with matching id from a book.
 template<typename Book>
 void OrderBook::removeFromBook(Book &book, int id)
 {
@@ -108,10 +124,10 @@ void OrderBook::removeFromBook(Book &book, int id)
 template<typename Book>
 void OrderBook::printSide(Book &book)
 {
-    for (auto &p : book)
+    for (const auto &p : book)
     {
         int total = 0;
-        for (auto &o : p.second)
+        for (const auto &o : p.second)
             total += o.qty;
         cout << p.first << " -> " << total << "\n";
     }

@@ -48,8 +48,15 @@ void Exchange::processCommand(const string &line)
     order.id = nextOrderId++;
     order.symbol = symbol;
 
-    order.side = (sideStr == "BUY") ? BUY : SELL;
-    order.type = (typeStr == "LIMIT") ? LIMIT : MARKET;
+    if (sideStr == "BUY")
+        order.side = BUY;
+    else
+        order.side = SELL;
+
+    if (typeStr == "LIMIT")
+        order.type = LIMIT;
+    else
+        order.type = MARKET;
 
     if (order.type == LIMIT)
         iss >> order.price >> order.qty;

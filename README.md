@@ -18,19 +18,6 @@ than production-scale performance.
 - View current order book state
 - View executed trades
 
----
-
-## Project Structure
-
-.
-├── src/
-│ └── simulator.cpp # Core trading simulator implementation
-├── docs/
-│ └── architecture.md # Design and architecture explanation
-├── tests/ # (Planned) test cases
-├── README.md
-└── .gitignore
-
 
 ---
 

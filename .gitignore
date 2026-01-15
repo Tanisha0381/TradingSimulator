@@ -2,3 +2,5 @@
 .vscode/
 *.o
 *.obj
+build/
+src/simulator/
